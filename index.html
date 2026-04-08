@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bid Management Process Transformation | Datacom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body,
+    h1, h2, h3, h4, h5, h6,
+    p, span, div, li {
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: #f8f9fc;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, #7827ff 0%, #5a1fcc 100%);
+      color: white;
+      padding: 2rem 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-logo {
+      padding: 0 1.5rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar-logo h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-logo p {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      font-weight: 300;
+    }
+
+    .nav-menu {
+      list-style: none;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-left-color: #06b6d4;
+    }
+
+    .nav-item.active {
+      background: rgba(255, 255, 255, 0.15);
+      border-left-color: #10b981;
+    }
+
+    /* Main content */
+    .main-content {
+      margin-left: 280px;
+      flex: 1;
+      padding: 3rem;
+      max-width: 1400px;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.35s ease-in;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: #1e293b;
+      margin-bottom: 1rem;
+    }
+
+    .page-description {
+      font-size: 1.1rem;
+      color: #64748b;
+      line-height: 1.7;
+      max-width: 900px;
+    }
+
+    .mt-4 { margin-top: 2rem; }
+    .mb-4 { margin-bottom: 2rem; }
+    .text-center { text-align: center; }
+
+    /* Cards */
+    .card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid rgba(120, 39, 255, 0.15);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+      border: 1px solid rgba(120, 39, 255, 0.3);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      background: #E4D4FF;
+      color: #7827FF;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-description {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .card-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      background: #E4D4FF;
+      color: #7827FF;
+    }
+
+    /* Flow */
+    .flow-arrow {
+      color: #94a3b8;
+      font-size: 1.5rem;
+    }
+
+    .staged-flow {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid rgba(120, 39, 255, 0.08);
+    }
+
+    .staged-flow-header {
+      display: grid;
+      grid-template-columns: 260px 40px 1fr;
+      align-items: end;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding: 0 0.25rem;
+    }
+
+    .staged-flow-header-left,
+    .staged-flow-header-right {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #0A1017;
+    }
+
+    .staged-flow-header-left {
+      grid-column: 1;
+      text-align: left;
+    }
+
+    .staged-flow-header-right {
+      grid-column: 3;
+      text-align: left;
+    }
+
+    .staged-flow-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .staged-flow-row {
+      display: grid;
+      grid-template-columns: 260px 40px 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+
+    .staged-flow-row:hover {
+      transform: translateY(-2px);
+      filter: drop-shadow(0 10px 18px rgba(120, 39, 255, 0.14));
+    }
+
+    .flow-stage-label {
+      background: rgba(0, 209, 196, 0.14);
+      color: #0A1017;
+      border: 1px solid rgba(0, 209, 196, 0.28);
+      border-radius: 999px;
+      padding: 0.75rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .flow-process-block {
+      background: linear-gradient(135deg, #7827FF 0%, #5a1fcc 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      width: 100%;
+      max-width: 640px;
+      text-align: center;
+      font-size: 0.98rem;
+      font-weight: 600;
+      line-height: 1.4;
+      box-shadow: 0 6px 16px rgba(120, 39, 255, 0.22);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .staged-flow-row:hover .flow-process-block {
+      box-shadow: 0 12px 24px rgba(120, 39, 255, 0.28);
+    }
+
+    .staged-flow-arrow {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #7827FF;
+      line-height: 1;
+      opacity: 0.7;
+      margin: 0;
+    }
+
+    /* Lifecycle */
+    .lifecycle-container {
+      background: white;
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin: 2rem 0;
+      overflow-x: auto;
+    }
+
+    .lifecycle-stages {
+      display: flex;
+      gap: 1rem;
+      min-width: 1100px;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+
+    .lifecycle-stage {
+      flex: 1;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.5rem;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .lifecycle-stage:hover {
+      border-color: #06b6d4;
+      box-shadow: 0 4px 12px rgba(6,182,212,0.15);
+    }
+
+    .lifecycle-stage-number {
+      position: absolute;
+      top: -12px;
+      left: 1rem;
+      background: #1e40af;
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .lifecycle-stage-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .lifecycle-stage-content {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .lifecycle-stage-content strong {
+      display: block;
+      color: #1e293b;
+      margin-top: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Roadmap */
+    .roadmap-timeline {
+      margin: 2rem 0;
+    }
+
+    .wave-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid #06b6d4;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+    }
+
+    .wave-card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .wave-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .wave-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .wave-label {
+      background: #06b6d4;
+      color: white;
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .wave-objective {
+      font-size: 1rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+      padding-left: 1rem;
+      border-left: 3px solid #e2e8f0;
+    }
+
+    .wave-deliverables {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .deliverable-item {
+      background: #f8fafc;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .deliverable-item::before {
+      content: "✓";
+      color: #7827ff;
+      font-weight: 700;
+    }
+
+    /* Insight */
+    .insight-box {
+      background: linear-gradient(135deg, #00d1c4 0%, #00a89e 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+      box-shadow: 0 8px 24px rgba(8,145,178,0.25);
+    }
+
+    .insight-box-quote {
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    .insight-box-text {
+      font-size: 1rem;
+      opacity: 0.95;
+    }
+
+    /* Issue list */
+    .issue-list {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .issue-item {
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      background: #E4D4FF;
+      border-left: 4px solid #7c3aed;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: #4c1d95;
+    }
+
+    .issue-item::before {
+      content: "⚠";
+      margin-right: 0.75rem;
+      font-size: 1.2rem;
+    }
+
+    /* Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 2em 0;
+}
+
+/* 👇 ADD RIGHT HERE */
+@media (max-width: 1024px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+    .metric-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border-top: 4px solid #7827ff;
+      text-align: center;
+    }
+
+    .metric-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 0.5rem;
+    }
+
+    /* Toolkit */
+   .toolkit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  align-items: stretch;
+}
+
+    .toolkit-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s;
+  min-height: 260px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+    .toolkit-card:hover {
+      border-color: #06b6d4;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .toolkit-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #00D1C4 0%, #00a89e 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      margin-bottom: 1.25rem;
+      color: white;
+    }
+
+    .toolkit-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.75rem;
+    }
+
+    .toolkit-description {
+      font-size: 0.95rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* Governance */
+    .governance-flow {
+      background: white;
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin: 2rem 0;
+    }
+
+    .gate-steps {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .gate-step {
+      background: linear-gradient(135deg, #00D1C4 0%, #00bfb3 100%);
+      color: white;
+      padding: 1.5rem 3rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      min-width: 350px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(124,58,237,0.25);
+    }
+
+    .governance-elements {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .governance-element {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 10px;
+      border-left: 4px solid #7c3aed;
+    }
+
+    .governance-element-title {
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Systems */
+    .system-diagram {
+      background: white;
+      border-radius: 12px;
+      padding: 3rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .system-nodes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+
+    .system-node {
+      background: linear-gradient(135deg, #7827ff 0%, #5a1fcc 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      min-width: 160px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(30,64,175,0.25);
+    }
+
+    .system-connector {
+      color: #94a3b8;
+      font-size: 1.5rem;
+    }
+
+    /* Deliverables */
+    .deliverables-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-header {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 3px solid #e2e8f0;
+    }
+
+    .deliverable-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .deliverable-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: flex;
+      gap: 1rem;
+      align-items: start;
+      transition: all 0.2s;
+    }
+
+    .deliverable-card:hover {
+      border-color: #06b6d4;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .deliverable-check {
+      color: #7827ff;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .deliverable-content h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 0.25rem;
+    }
+
+    .deliverable-content p {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    /* Expandable */
+    .expandable {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .expandable-header {
+      padding: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      transition: all 0.2s;
+    }
+
+    .expandable-header:hover {
+      background: #f1f5f9;
+    }
+
+    .expandable-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .expandable-icon {
+      transition: transform 0.3s;
+      color: #64748b;
+    }
+
+    .expandable.open .expandable-icon {
+      transform: rotate(180deg);
+    }
+
+    .expandable-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .expandable.open .expandable-content {
+      max-height: 2200px;
+    }
+
+    .expandable-body {
+      padding: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 240px;
+      }
+
+      .main-content {
+        margin-left: 240px;
+        padding: 2rem;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .staged-flow-header,
+      .staged-flow-row {
+        grid-template-columns: 1fr;
+      }
+
+      .staged-flow-header-right,
+      .staged-flow-header-left {
+        text-align: center;
+      }
+
+      .flow-process-block {
+        min-width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        z-index: 1000;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 1.5rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .lifecycle-stages {
+        flex-direction: column;
+        min-width: auto;
+      }
+
+      .wave-header {
+        flex-direction: column;
+      }
+    }
+.roles-section {
+  margin-top: 1rem;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.role-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.role-header {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 1.2rem 1rem;
+  border-radius: 14px;
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.role-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.role-item {
+  background: white;
+  border: 2px solid rgba(120, 39, 255, 0.22);
+  border-radius: 14px;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  color: #1e293b;
+  font-size: 0.98rem;
+  line-height: 1.4;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.role-column.sales .role-header {
+  background: linear-gradient(135deg, #7827FF 0%, #5a1fcc 100%);
+}
+
+.role-column.pmm .role-header {
+  background: #555555;
+}
+
+.role-column.bidmanager .role-header {
+  background: #7DB3E8;
+}
+
+.role-column.presales .role-header {
+  background: #8CCB4C;
+}
+
+.role-column.pmm .role-item {
+  border-color: rgba(85, 85, 85, 0.35);
+}
+
+.role-column.bidmanager .role-item {
+  border-color: rgba(125, 179, 232, 0.45);
+}
+
+.role-column.presales .role-item {
+  border-color: rgba(140, 203, 76, 0.45);
+}
+
+@media (max-width: 1200px) {
+  .roles-grid {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .roles-grid {
+    grid-template-columns: 1fr;
+  }
+}  
+.miro-section {
+    margin-top: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .miro-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    padding: 1rem;
+  }
+
+  .miro-container img {
+    width: 1400px;
+    max-width: none;
+  }
+
+.zoomable-image {
+  cursor: zoom-in;
+}
+
+.miro-section {
+  margin-top: 2rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.miro-link-card {
+  background: linear-gradient(135deg, rgba(120, 39, 255, 0.08), rgba(37, 99, 235, 0.08));
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.miro-link-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.miro-link-text {
+  flex: 1 1 420px;
+}
+
+.miro-link-title {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.miro-link-description {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.miro-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.85rem 1.2rem;
+  border-radius: 12px;
+  white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.18);
+}
+
+.miro-link-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.24);
+}
+
+.miro-preview-note {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0.75rem 0 0.65rem 0;
+}
+
+.miro-preview-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  padding: 1rem;
+}
+
+.miro-preview-container img {
+  width: 100%;
+  max-width: 1200px;
+  display: block;
+  border-radius: 8px;
+}
+.lifestyle-note { display:none; }
+
+.lifecycle-stage {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.lifecycle-stage:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  border-color: #b8a8ff;
+}
+
+.lifecycle-stage.active {
+  border-color: #7c3aed;
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.14);
+  background: linear-gradient(180deg, rgba(124, 58, 237, 0.04), rgba(255,255,255,1));
+}
+
+.stage-detail-panel {
+  margin-top: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 1.5rem;
+}
+
+.stage-detail {
+  display: none;
+}
+
+.stage-detail.active {
+  display: block;
+}
+
+.stage-detail-header h3 {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.stage-detail-header p {
+  margin: 0 0 1.25rem 0;
+  color: #6b7280;
+}
+
+.stage-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.stage-detail-card {
+  border: 1px solid #ebe7fb;
+  border-radius: 14px;
+  background: #fcfbff;
+  padding: 1rem 1rem 0.9rem 1rem;
+}
+
+.stage-detail-card h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.stage-detail-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #667085;
+  line-height: 1.6;
+}
+
+.stage-detail-card li + li {
+  margin-top: 0.45rem;
+}
+
+@media (max-width: 1024px) {
+  .stage-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== TOOL LINKS (STAGE ACTIONS) ===== */
+
+.tool-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.tool-link {
+  display: block !important;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  background: #f3f0ff;
+  color: #5b21b6 !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  transition: all 0.15s ease;
+}
+
+.tool-link:hover {
+  background: #ede9fe;
+  transform: translateX(2px);
+}
+.quickwins-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.quickwins-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.quickwins-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  color: #7827ff;
+}
+
+.callout-banner {
+  margin-top: 2rem;
+  padding: 1rem 1.2rem;
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  color: #ffffff;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .quickwins-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Supporting roles layout tweak */
+.supporting-roles {
+  margin-top: 0.5rem;
+}
+
+/* Delivery (Yellow) */
+.role-column.delivery .role-header {
+  background: linear-gradient(135deg, #facc15, #eab308);
+  color: #1e293b;
+}
+
+.role-column.delivery .role-item {
+  border: 2px solid #fde68a;
+}
+
+/* Product (Red) */
+.role-column.product .role-header {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.role-column.product .role-item {
+  border: 2px solid #fecaca;
+}
+
+/* Key Approvers (Pink) */
+.role-column.approvers .role-header {
+  background: linear-gradient(135deg, #ec4899, #db2777);
+  color: white;
+}
+
+.role-column.approvers .role-item {
+  border: 2px solid #fbcfe8;
+}
+
+</style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <h1>Bid Management</h1>
+        <p>Process Transformation</p>
+      </div>
+
+      <ul class="nav-menu">
+        <li class="nav-item active" data-page="overview">Overview</li>
+        <li class="nav-item" data-page="roles">Who does what</li>
+        <li class="nav-item" data-page="execution-model">Bid Execution Model</li>
+        <li class="nav-item" data-page="metrics">Success Metrics</li>
+        <li class="nav-item" data-page="quickwins">Quick Wins in Motion</li>
+      </ul>
+    </aside>
+
+   <main class="main-content">
+  <!-- Page 1 -->
+  <div id="overview" class="page active">
+    <div class="page-header">
+      <h1 class="page-title">Bid Management Process Transformation</h1>
+      <p class="page-description">
+        This programme introduces a structured, lifecycle-aligned approach to how we run bids.
+      </p>
+
+      <div class="page-description" style="margin-top: 1.5rem;">
+        <p style="margin-bottom: 0.8rem;"><strong>Why this matters</strong></p>
+        <ul style="list-style: none; padding-left: 0; margin: 0; line-height: 1.9; color: #64748b; font-size: 1.05rem;">
+          <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">⚠</span>strong work already happens across teams, but not always in a consistent flow</li>
+          <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">⚠</span>this can create unnecessary pressure, rework, and variability</li>
+        </ul>
+      </div>
+
+      <div class="page-description" style="margin-top: 1.5rem;">
+        <p style="margin-bottom: 0.8rem;"><strong>The goal is simple</strong></p>
+        <ul style="list-style: none; padding-left: 0; margin: 0; line-height: 1.9; color: #64748b; font-size: 1.05rem;">
+          <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>ensure the right inputs happen at the right time</li>
+          <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>establish clear ownership at each stage</li>
+          <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>enable smoother end-to-end bid execution</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="page-description mb-4">
+      <p style="margin-top: 2rem; margin-bottom: 0.8rem; font-weight: 500; color: #1e293b;">
+        How this fits our sales stages
+      </p>
+    </div>
+
+    <div class="staged-flow">
+      <div class="staged-flow-header">
+        <div class="staged-flow-header-left">Sales Stage</div>
+        <div></div>
+        <div class="staged-flow-header-right">Equivalent Bid Stage</div>
+      </div>
+
+      <div class="staged-flow-rows">
+        <div class="staged-flow-row">
+          <div class="flow-stage-label">Target &amp; Hook</div>
+          <div class="staged-flow-arrow">↓</div>
+          <div class="flow-process-block">Bid Identification</div>
+        </div>
+
+        <div class="staged-flow-row">
+          <div class="flow-stage-label">Lead Qualification</div>
+          <div class="staged-flow-arrow">↓</div>
+          <div class="flow-process-block">Bid Qualification</div>
+        </div>
+
+        <div class="staged-flow-row">
+          <div class="flow-stage-label">Opportunity Validation</div>
+          <div class="staged-flow-arrow">↓</div>
+          <div class="flow-process-block">Bid Planning &amp; Solution Definition</div>
+        </div>
+
+        <div class="staged-flow-row">
+          <div class="flow-stage-label">Solution Proposal</div>
+          <div class="staged-flow-arrow">↓</div>
+          <div class="flow-process-block">Bid Development / Skeleton / DFA / Review / Submission Approval / Submit &amp; Handover</div>
+        </div>
+
+        <div class="staged-flow-row">
+          <div class="flow-stage-label">Contracting &amp; Close</div>
+          <div class="staged-flow-arrow">↓</div>
+          <div class="flow-process-block">Outcome &amp; Learning</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="
+  margin-top: 2.5rem;
+  padding: 1.6rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+  border-left: 4px solid #7827FF;
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.08);
+">
+  <p style="
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+  ">
+    What this improves
+  </p>
+
+  <ul style="
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    line-height: 1.9;
+    color: #64748b;
+    font-size: 1.05rem;
+  ">
+    <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>clearer ownership at each stage</li>
+    <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>smoother handoffs across teams</li>
+    <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>less unnecessary pressure and rework</li>
+    <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>a more consistent path from opportunity to submission</li>
+  </ul>
+</div>
+  </div>
+
+  <!-- Page 2 -->
+  <div id="roles" class="page">
+    <div class="roles-section">
+      <div class="page-header" style="margin-bottom: 1.5rem;">
+        <h1 class="page-title">Who does what?</h1>
+        <p class="page-description">
+  Clear ownership reduces duplication, improves handoffs, and keeps bids moving.
+</p>
+
+<p class="page-description" style="margin-top: 0.8rem; font-weight: 500; color: #1e293b;">
+  Each stage has one owner, with clear supporting roles.
+</p>
+      </div>
+
+      <div class="roles-grid">
+        <div class="role-column sales">
+          <div class="role-header">Sales</div>
+          <div class="role-items">
+            <div class="role-item">Owns opportunity + strategy</div>
+            <div class="role-item">Provides inputs (win themes, key messages)</div>
+          </div>
+        </div>
+
+        <div class="role-column pmm">
+          <div class="role-header">Product Marketing Manager</div>
+          <div class="role-items">
+            <div class="role-item">Shapes positioning</div>
+            <div class="role-item">Writes executive summary</div>
+            <div class="role-item">Provides proof points + CVP alignment</div>
+          </div>
+        </div>
+
+        <div class="role-column bidmanager">
+          <div class="role-header">Bid Manager</div>
+          <div class="role-items">
+            <div class="role-item">Runs process + timing</div>
+            <div class="role-item">Ensures inputs are captured early</div>
+          </div>
+        </div>
+
+                <div class="role-column presales">
+      <div class="role-header">Presales</div>
+      <div class="role-items">
+        <div class="role-item">Own solution + costing inputs</div>
+      </div>
+    </div>
+  </div>
+
+<!-- Supporting Roles -->
+<h3 style="margin-top: 2.5rem; margin-bottom: 0.5rem; color: #1e293b;">
+  Supporting roles & approvals
+</h3>
+
+<p class="page-description" style="margin-bottom: 1.5rem;">
+  These roles are engaged at key points to shape cost, feasibility, and approval.
+</p>
+
+<div class="roles-grid supporting-roles">
+
+  <!-- Delivery -->
+  <div class="role-column delivery">
+    <div class="role-header">Delivery</div>
+    <div class="role-items">
+      <div class="role-item">Defines deployment scope, effort, and timeline</div>
+      <div class="role-item">Provides implementation cost inputs</div>
+      <div class="role-item">Confirms delivery feasibility and risks</div>
+    </div>
+  </div>
+
+  <!-- Product -->
+  <div class="role-column product">
+    <div class="role-header">Product</div>
+    <div class="role-items">
+      <div class="role-item">Validates solution alignment and capability</div>
+      <div class="role-item">Supports non-standard or new requirements</div>
+      <div class="role-item">Provides input on roadmap and constraints</div>
+    </div>
+  </div>
+
+  <!-- Key Approvers -->
+  <div class="role-column approvers">
+    <div class="role-header">Key Approvers</div>
+    <div class="role-items">
+      <div class="role-item">Approve pricing, risk, and commercial position</div>
+      <div class="role-item">Provide go / no-go decisions at key stages</div>
+      <div class="role-item">Ensure alignment to business and financial targets</div>
+    </div>
+  </div>
+
+</div>
+
+  <div style="
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+    border-left: 4px solid #7827FF;
+  ">
+    <p style="margin-bottom: 0.8rem; font-weight: 600; color: #1e293b;">
+      What this means in practice
+    </p>
+    <ul style="list-style: none; padding-left: 0; margin: 0; line-height: 1.9; color: #475569; font-size: 1.05rem;">
+      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Sales leads the opportunity, not the document</li>
+      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Bid Manager owns the process, not the strategy</li>
+      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Inputs are gathered early, not chased late</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<!-- Page 3 -->
+<div id="execution-model" class="page">
+
+  <div class="page-header">
+    <h1 class="page-title">Lifecycle-Aligned Bid Execution Model</h1>
+    <p class="page-description">
+      The bid execution model aligns each stage of the bid lifecycle to Salesforce opportunity stages,
+      creating clear handoffs, ownership and approval gates.
+    </p>
+  </div>
+
+  <!-- ===== AT A GLANCE (KEEP THIS SIMPLE VIEW) ===== -->
+  <div class="lifecycle-container">
+  <div class="lifecycle-stages">
+
+    <div class="lifecycle-stage active" onclick="showStageDetail('stage1', this)">
+      <div class="lifecycle-stage-number">1</div>
+      <div class="lifecycle-stage-title">Opportunity Identification</div>
+      <div class="lifecycle-stage-content">
+        <strong>Purpose:</strong> Identify and capture opportunity
+        <strong>Owner:</strong> Sales Executive
+      </div>
+    </div>
+
+    <div class="lifecycle-stage" onclick="showStageDetail('stage2', this)">
+      <div class="lifecycle-stage-number">2</div>
+      <div class="lifecycle-stage-title">Bid Qualification</div>
+      <div class="lifecycle-stage-content">
+        <strong>Purpose:</strong> Determine bid viability
+        <strong>Owner:</strong> Sales + Bid Manager
+      </div>
+    </div>
+
+    <div class="lifecycle-stage" onclick="showStageDetail('stage3', this)">
+      <div class="lifecycle-stage-number">3</div>
+      <div class="lifecycle-stage-title">Bid Planning</div>
+      <div class="lifecycle-stage-content">
+        <strong>Purpose:</strong> Structure approach
+        <strong>Owner:</strong> Bid Manager
+      </div>
+    </div>
+
+    <div class="lifecycle-stage" onclick="showStageDetail('stage4', this)">
+      <div class="lifecycle-stage-number">4</div>
+      <div class="lifecycle-stage-title">Proposal Development</div>
+      <div class="lifecycle-stage-content">
+        <strong>Purpose:</strong> Create response
+        <strong>Owner:</strong> Bid Team
+      </div>
+    </div>
+
+    <div class="lifecycle-stage" onclick="showStageDetail('stage5', this)">
+      <div class="lifecycle-stage-number">5</div>
+      <div class="lifecycle-stage-title">Commercial Approval</div>
+      <div class="lifecycle-stage-content">
+        <strong>Purpose:</strong> Validate pricing &amp; terms
+        <strong>Owner:</strong> Commercial
+      </div>
+    </div>
+
+    <div class="lifecycle-stage" onclick="showStageDetail('stage6', this)">
+      <div class="lifecycle-stage-number">6</div>
+      <div class="lifecycle-stage-title">Submission</div>
+      <div class="lifecycle-stage-content">
+        <strong>Purpose:</strong> Submit proposal
+        <strong>Owner:</strong> Bid Manager
+      </div>
+    </div>
+
+    <div class="lifecycle-stage" onclick="showStageDetail('stage7', this)">
+      <div class="lifecycle-stage-number">7</div>
+      <div class="lifecycle-stage-title">Outcome &amp; Learning</div>
+      <div class="lifecycle-stage-content">
+        <strong>Purpose:</strong> Capture insights
+        <strong>Owner:</strong> Bid + Sales
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stage-detail-panel" id="stageDetailPanel">
+    <div id="stage1" class="stage-detail active">
+      <div class="stage-detail-header">
+        <h3>1. Opportunity Identification</h3>
+        <p>Identify and capture an opportunity worth progressing.</p>
+      </div>
+      <div class="stage-detail-grid">
+        <div class="stage-detail-card">
+          <h4>Key actions</h4>
+          <ul>
+            <li>Confirm the opportunity is real and worth early attention</li>
+            <li>Capture initial customer context and likely bid shape</li>
+            <li>Identify early stakeholders and timing signals</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+  <h4>Templates & tools</h4>
+
+  <div class="tool-links">
+
+    <a href="#" class="tool-link">
+      Open Opportunity in Salesforce
+    </a>
+
+    <a href="#" class="tool-link">
+      Run Initial Qualification
+    </a>
+
+    <a href="#" class="tool-link">
+      Create Stakeholder Map
+    </a>
+
+  </div>
+</div>
+        <div class="stage-detail-card">
+          <h4>Gate criteria</h4>
+          <ul>
+            <li>Opportunity is logged</li>
+            <li>Basic customer context is known</li>
+            <li>There is enough signal to move into qualification</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="stage2" class="stage-detail">
+      <div class="stage-detail-header">
+        <h3>2. Bid Qualification</h3>
+        <p>Determine whether the bid should proceed.</p>
+      </div>
+      <div class="stage-detail-grid">
+        <div class="stage-detail-card">
+          <h4>Key actions</h4>
+          <ul>
+            <li>Run a structured bid / no-bid assessment</li>
+            <li>Check strategic fit, competitiveness and resourcing</li>
+            <li>Confirm whether Datacom should invest in the bid</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Templates &amp; tools</h4>
+          <ul>
+            <li>Bid qualification checklist</li>
+            <li>No-bid / proceed decision support</li>
+            <li>Salesforce qualification fields</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Gate criteria</h4>
+          <ul>
+            <li>Decision to proceed is clear</li>
+            <li>Strategic fit is confirmed</li>
+            <li>Owner and next step are agreed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="stage3" class="stage-detail">
+      <div class="stage-detail-header">
+        <h3>3. Bid Planning</h3>
+        <p>Set the bid up properly before development begins.</p>
+      </div>
+      <div class="stage-detail-grid">
+        <div class="stage-detail-card">
+          <h4>Key actions</h4>
+          <ul>
+            <li>Confirm scope, timeline and bid strategy</li>
+            <li>Assign contributors and agree responsibilities</li>
+            <li>Set review points and delivery plan</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Templates &amp; tools</h4>
+          <ul>
+            <li>Bid plan template</li>
+            <li>RACI / owner mapping</li>
+            <li>Timeline or milestone tracker</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Gate criteria</h4>
+          <ul>
+            <li>Bid plan is agreed</li>
+            <li>Owners are clear</li>
+            <li>Delivery approach is realistic</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="stage4" class="stage-detail">
+      <div class="stage-detail-header">
+        <h3>4. Proposal Development</h3>
+        <p>Develop the response and bring the proposal together.</p>
+      </div>
+      <div class="stage-detail-grid">
+        <div class="stage-detail-card">
+          <h4>Key actions</h4>
+          <ul>
+            <li>Draft and refine response content</li>
+            <li>Coordinate SMEs, reviews and inputs</li>
+            <li>Strengthen clarity, quality and customer relevance</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Templates &amp; tools</h4>
+          <ul>
+            <li>Response templates</li>
+            <li>Bid library assets</li>
+            <li>Review checklist</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Gate criteria</h4>
+          <ul>
+            <li>Response is complete</li>
+            <li>Core quality checks are done</li>
+            <li>Proposal is ready for commercial review</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="stage5" class="stage-detail">
+      <div class="stage-detail-header">
+        <h3>5. Commercial Approval</h3>
+        <p>Validate pricing, terms and commercial position.</p>
+      </div>
+      <div class="stage-detail-grid">
+        <div class="stage-detail-card">
+          <h4>Key actions</h4>
+          <ul>
+            <li>Review pricing, margin and commercials</li>
+            <li>Check assumptions and approval thresholds</li>
+            <li>Resolve any issues before submission</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Templates &amp; tools</h4>
+          <ul>
+            <li>Pricing workbook</li>
+            <li>Approval matrix</li>
+            <li>Commercial review checklist</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Gate criteria</h4>
+          <ul>
+            <li>Pricing is approved</li>
+            <li>Commercial risks are understood</li>
+            <li>Submission can proceed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="stage6" class="stage-detail">
+      <div class="stage-detail-header">
+        <h3>6. Submission</h3>
+        <p>Complete final checks and submit the proposal.</p>
+      </div>
+      <div class="stage-detail-grid">
+        <div class="stage-detail-card">
+          <h4>Key actions</h4>
+          <ul>
+            <li>Run final review and sign-off</li>
+            <li>Check submission requirements and deadlines</li>
+            <li>Submit and confirm receipt where needed</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Templates &amp; tools</h4>
+          <ul>
+            <li>Submission checklist</li>
+            <li>Final review checklist</li>
+            <li>Portal / submission guidance</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Gate criteria</h4>
+          <ul>
+            <li>All approvals are complete</li>
+            <li>Submission is compliant</li>
+            <li>Final package is issued on time</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="stage7" class="stage-detail">
+      <div class="stage-detail-header">
+        <h3>7. Outcome &amp; Learning</h3>
+        <p>Capture learning and improve the next bid.</p>
+      </div>
+      <div class="stage-detail-grid">
+        <div class="stage-detail-card">
+          <h4>Key actions</h4>
+          <ul>
+            <li>Run debrief and capture feedback</li>
+            <li>Document lessons learned</li>
+            <li>Feed insights back into assets and process</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Templates &amp; tools</h4>
+          <ul>
+            <li>Win / loss review template</li>
+            <li>Lessons learned log</li>
+            <li>Improvement tracker</li>
+          </ul>
+        </div>
+        <div class="stage-detail-card">
+          <h4>Gate criteria</h4>
+          <ul>
+            <li>Outcome is recorded</li>
+            <li>Insights are captured</li>
+            <li>Useful improvements are fed back into the system</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- ===== MIRO BOARD SECTION ===== -->
+  <div class="miro-section">
+
+  <h2 class="section-title">Full Bid Workflow (Detailed View)</h2>
+
+  <p class="page-description" style="margin-bottom: 1rem;">
+    The model above is designed for quick understanding.<br> 
+For full stage detail, gates, ownership and outputs, use the MIRO board.
+  </p>
+
+  <div class="miro-link-card">
+    <div class="miro-link-content">
+      <div class="miro-link-text">
+        <h3 class="miro-link-title">Open the full Bid Execution Workflow in MIRO</h3>
+        <p class="miro-link-description">
+          Best for zooming, panning and reading the full process in detail.
+        </p>
+      </div>
+
+      <a href="https://au.miro.com/app/board/u3jVOftpb2I=/?share_link_id=949234701939" target="_blank" class="miro-link-button">
+        View Full Workflow (MIRO) ↗ 
+      </a>
+    </div>
+  </div>
+
+  
+
+</div>
+
+  <!-- ===== DESIGN PRINCIPLES (UNCHANGED STYLE) ===== -->
+  <div class="expandable mt-4">
+    <div class="expandable-header" onclick="toggleExpandable(this)">
+      <h3 class="expandable-title">Key Design Principles</h3>
+      <span class="expandable-icon">▼</span>
+    </div>
+
+    <div class="expandable-content">
+      <div class="expandable-body">
+        <div class="card-grid">
+
+          <div class="card">
+            <h4 class="card-title">Lifecycle Alignment</h4>
+            <p class="card-description">
+              Every bid stage maps directly to Salesforce opportunity stages for consistency.
+            </p>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title">Clear Ownership</h4>
+            <p class="card-description">
+              Each stage has defined owners and clear handoff points.
+            </p>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title">Right-Sized Gates</h4>
+            <p class="card-description">
+              Approvals are positioned to support quality without creating delays.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+      
+
+      
+
+      <!-- Page 8 -->
+      <div id="metrics" class="page">
+        <div class="page-header">
+          <h1 class="page-title">How We Measure Impact</h1>
+          <p class="page-description">
+            Success will be measured by both efficiency improvements and quality outcomes—ensuring that better structure and guidance translates into real adoption, faster execution and improved win rates.
+          </p>
+        </div>
+
+<h3 style="margin-top: 2rem; margin-bottom: 1rem;">What will change in behaviour</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>More structured progression</h4>
+    <p>
+  Deals move through defined stages with clear qualification and handoffs.
+  <br><strong>→ Drives:</strong> Faster proposal preparation and reduced approval cycle time
+</p>
+  </div>
+
+  <div class="card">
+    <h4>Higher asset usage</h4>
+    <p>
+  Sellers use approved templates and guidance instead of recreating content.
+  <br><strong>→ Drives:</strong> Higher asset reuse rate and improved win rate
+</p><p>
+  Sellers use approved templates and guidance instead of recreating content.
+  <br><strong>→ Drives:</strong> Higher asset reuse rate and improved win rate
+</p>
+  </div>
+
+  <div class="card">
+    <h4>Earlier issue identification</h4>
+    <p>
+  Risks and pricing issues surface earlier in the lifecycle.
+  <br><strong>→ Drives:</strong> Faster bid turnaround time and fewer late-stage delays
+</p>
+  </div>
+
+  <div class="card">
+    <h4>Less rework</h4>
+    <p>
+  Late-stage changes reduce due to clearer expectations upfront.
+  <br><strong>→ Drives:</strong> Shorter cycle times and higher on-time submission rates
+</p>
+  </div>
+</div>
+<h3 style="margin-top: 2rem; margin-bottom: 1rem;">Target outcomes</h3>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon">⏱️</div>
+            <div class="metric-label">Proposal Preparation Time</div>
+            <div class="metric-value">-30%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">🚀</div>
+            <div class="metric-label">Bid Turnaround Time</div>
+            <div class="metric-value">-25%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">🎯</div>
+            <div class="metric-label">Win Rate</div>
+            <div class="metric-value">+15%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">♻️</div>
+            <div class="metric-label">Asset Reuse Rate</div>
+            <div class="metric-value">85%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">✅</div>
+            <div class="metric-label">Approval Cycle Time</div>
+            <div class="metric-value">-40%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">📅</div>
+            <div class="metric-label">On-Time Submissions</div>
+            <div class="metric-value">98%</div>
+          </div>
+        </div>
+
+        <h2 style="font-size: 1.75rem; font-weight: 700; margin: 3rem 0 1.5rem; color: #1e293b;">
+          Measurement Framework
+        </h2>
+
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon"><span>⚡</span></div>
+            <h3 class="card-title">Efficiency Metrics</h3>
+            <p class="card-description">Time-based measures tracking how quickly bids move through the lifecycle.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><span>🎯</span></div>
+            <h3 class="card-title">Quality Metrics</h3>
+            <p class="card-description">Outcome-based measures for proposal quality, win rates and customer feedback.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><span>📊</span></div>
+            <h3 class="card-title">Adoption Metrics</h3>
+            <p class="card-description">Usage metrics tracking toolkit adoption, asset reuse and process compliance.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><span>🔄</span></div>
+            <h3 class="card-title">Continuous Improvement</h3>
+            <p class="card-description">Regular review cycles capturing lessons learned and further optimisation opportunities.</p>
+          </div>
+        </div>
+      </div>
+
+     
+
+  <!-- Page 10 -->
+<div id="quickwins" class="page">
+  <div class="page-header">
+    <h1 class="page-title">Quick Wins in Motion</h1>
+    <p class="page-description">
+      These improvements have been defined and prioritised to improve how bids are run.
+      They will be introduced in phases, with early changes focused on clarity, guidance and workflow consistency.
+    </p>
+  </div>
+
+  <div class="quickwins-split">
+    <div class="quickwins-column">
+      <h3 class="quickwins-heading">What changes</h3>
+
+      <div class="toolkit-card">
+        <div class="toolkit-icon">🔗</div>
+        <h3 class="toolkit-title">Better workflow entry points</h3>
+        <p class="toolkit-description">
+          Clearer entry into live bids through a Bid Tracker link, better stage triggers and simpler navigation into the bid workspace.
+        </p>
+      </div>
+
+      <div class="toolkit-card">
+        <div class="toolkit-icon">📄</div>
+        <h3 class="toolkit-title">Cleaner bid guidance</h3>
+        <p class="toolkit-description">
+          Clearer proposal templates, bid solution document guidance, on-the-truck definitions and gate references to reduce ambiguity.
+        </p>
+      </div>
+    </div>
+
+    <div class="quickwins-column">
+      <h3 class="quickwins-heading">What’s next</h3>
+
+      <div class="toolkit-card">
+        <div class="toolkit-icon">⚙️</div>
+        <h3 class="toolkit-title">Smarter system nudges</h3>
+        <p class="toolkit-description">
+          Small Salesforce improvements to support visibility, notifications and cleaner progression through the process.
+        </p>
+      </div>
+
+      <div class="toolkit-card">
+        <div class="toolkit-icon">📚</div>
+        <h3 class="toolkit-title">More usable assets</h3>
+        <p class="toolkit-description">
+          Better templates and supporting assets that give teams more practical guidance, with less reliance on side workarounds.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 2rem; margin-bottom: 1rem;">What this means in practice</h3>
+
+  <div class="expandable mt-4 open">
+    <div class="expandable-header" onclick="toggleExpandable(this)">
+      <h3 class="expandable-title">What this means for sellers and pre-sales</h3>
+      <span class="expandable-icon">▼</span>
+    </div>
+    <div class="expandable-content">
+      <div class="expandable-body">
+        <div class="issue-list">
+          <div class="issue-item" style="background:#f8fafc; border-left-color:#7827ff; color:#475569;">
+            Clearer definition of what good looks like before progressing a bid
+          </div>
+          <div class="issue-item" style="background:#f8fafc; border-left-color:#7827ff; color:#475569;">
+            Less reliance on memory, side conversations and individual workarounds
+          </div>
+          <div class="issue-item" style="background:#f8fafc; border-left-color:#7827ff; color:#475569;">
+            Stronger support for messaging, quality and bid readiness
+          </div>
+          <div class="issue-item" style="background:#f8fafc; border-left-color:#7827ff; color:#475569;">
+            Practical changes that can be introduced early, without waiting for the full future-state model
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-banner">
+    👉 This will evolve, but the bid flow and structure will remain consistent.
+  </div>
+
+  <div class="page-description mt-4">
+    <p>
+      The intent of these quick wins is simple: make it easier to run bids well, with better guidance,
+      cleaner handoffs and more confidence at each stage.
+    </p>
+  </div>
+</div>
+</main>
+</div>
+
+<script>
+  const navItems = document.querySelectorAll('.nav-item');
+  const pages = document.querySelectorAll('.page');
+
+  navItems.forEach(item => {
+    item.addEventListener('click', function () {
+      navItems.forEach(nav => nav.classList.remove('active'));
+      pages.forEach(page => page.classList.remove('active'));
+
+      this.classList.add('active');
+
+      const pageId = this.getAttribute('data-page');
+      const target = document.getElementById(pageId);
+
+      if (target) {
+        target.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+
+  function toggleExpandable(header) {
+    const expandable = header.parentElement;
+    expandable.classList.toggle('open');
+  }
+
+  function showStageDetail(stageId, clickedCard) {
+    document.querySelectorAll('.stage-detail').forEach(detail => {
+      detail.classList.remove('active');
+    });
+
+    document.querySelectorAll('.lifecycle-stage').forEach(card => {
+      card.classList.remove('active');
+    });
+
+    document.getElementById(stageId).classList.add('active');
+    clickedCard.classList.add('active');
+  }
+</script>
+</body>
+</html>
