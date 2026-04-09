@@ -486,14 +486,14 @@
     /* Metrics */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 1.5rem;
       margin: 2rem 0;
     }
 
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.5rem;
   margin: 2em 0;
 }
@@ -552,7 +552,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   border: 2px solid #e2e8f0;
   transition: all 0.3s;
-  min-height: 260px;
+  min-height: auto;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -1210,6 +1210,18 @@
 .role-column.approvers .role-item {
   border: 2px solid #fbcfe8;
 }
+.salesforce-stage-tag {
+  display: inline-block;
+  margin: 0.35rem 0 0.75rem 0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(0, 209, 196, 0.14);
+  border: 1px solid rgba(0, 209, 196, 0.28);
+  color: #1e293b;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
 
 </style>
 </head>
@@ -1225,8 +1237,9 @@
         <li class="nav-item active" data-page="overview">Overview</li>
         <li class="nav-item" data-page="roles">Who does what</li>
         <li class="nav-item" data-page="execution-model">Bid Execution Model</li>
-        <li class="nav-item" data-page="metrics">Success Metrics</li>
-        <li class="nav-item" data-page="quickwins">Quick Wins in Motion</li>
+	<li class="nav-item" data-page="quickwins">Quick Wins in Motion</li>        
+	<li class="nav-item" data-page="metrics">Success Metrics</li>
+       
       </ul>
     </aside>
 
@@ -1370,15 +1383,19 @@
         <div class="role-column bidmanager">
           <div class="role-header">Bid Manager</div>
           <div class="role-items">
-            <div class="role-item">Runs process + timing</div>
-            <div class="role-item">Ensures inputs are captured early</div>
+            <div class="role-item">Ensures inputs are complete</div>
+            <div class="role-item">Non-functional content</div>
+	    <div class="role-item">Commercial modeling</div>
+	    <div class="role-item">DFA process</div>
+	    <div class="role-item">Owns due dilligence around final bid</div>
           </div>
         </div>
 
                 <div class="role-column presales">
       <div class="role-header">Presales</div>
       <div class="role-items">
-        <div class="role-item">Own solution + costing inputs</div>
+        <div class="role-item">Solution design</div>
+	<div class="role-item">Functional content</div>
       </div>
     </div>
   </div>
@@ -1398,9 +1415,9 @@
   <div class="role-column delivery">
     <div class="role-header">Delivery</div>
     <div class="role-items">
-      <div class="role-item">Defines deployment scope, effort, and timeline</div>
-      <div class="role-item">Provides implementation cost inputs</div>
-      <div class="role-item">Confirms delivery feasibility and risks</div>
+      <div class="role-item">Confirms costing of solution scope</div>
+      <div class="role-item">Confirms availability of resources for customer's proposed timeline</div>
+      <div class="role-item">Provides implementation assumptions</div>
     </div>
   </div>
 
@@ -1408,9 +1425,8 @@
   <div class="role-column product">
     <div class="role-header">Product</div>
     <div class="role-items">
-      <div class="role-item">Validates solution alignment and capability</div>
-      <div class="role-item">Supports non-standard or new requirements</div>
-      <div class="role-item">Provides input on roadmap and constraints</div>
+      <div class="role-item">Validates solution alignment and capability if non-standard</div>
+      <div class="role-item">Provides input on roadmap</div>
     </div>
   </div>
 
@@ -1419,9 +1435,8 @@
     <div class="role-header">Key Approvers</div>
     <div class="role-items">
       <div class="role-item">Approve pricing, risk, and commercial position</div>
-      <div class="role-item">Provide go / no-go decisions at key stages</div>
-      <div class="role-item">Ensure alignment to business and financial targets</div>
-    </div>
+      <div class="role-item">Provide go / no-go decisions at key stages if required</div>
+          </div>
   </div>
 
 </div>
@@ -1437,9 +1452,11 @@
       What this means in practice
     </p>
     <ul style="list-style: none; padding-left: 0; margin: 0; line-height: 1.9; color: #475569; font-size: 1.05rem;">
-      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Sales leads the opportunity, not the document</li>
-      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Bid Manager owns the process, not the strategy</li>
-      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Inputs are gathered early, not chased late</li>
+      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Sales leads the opportunity</li>
+      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Bid Manager owns the process</li>
+      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Inputs are gathered at the right time</li>
+      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Due dilligence applied</li>
+      <li><span style="color: #7827FF; font-weight: 700; margin-right: 0.6rem;">✓</span>Improved clarity on who's doing what and when</li>
     </ul>
   </div>
 </div>
@@ -1526,250 +1543,217 @@
   </div>
 
   <div class="stage-detail-panel" id="stageDetailPanel">
-    <div id="stage1" class="stage-detail active">
-      <div class="stage-detail-header">
-        <h3>1. Opportunity Identification</h3>
-        <p>Identify and capture an opportunity worth progressing.</p>
+  <div id="stage1" class="stage-detail active">
+    <div class="stage-detail-header">
+      <h3>1. Opportunity Identification</h3>
+      <div class="salesforce-stage-tag">Sales stage: Target &amp; Hook</div>
+      <p>Identify and capture an opportunity worth progressing.</p>
+    </div>
+    <div class="stage-detail-grid">
+      <div class="stage-detail-card">
+        <h4>Key actions</h4>
+        <ul>
+          <li>Confirm the opportunity is real and worth early attention</li>
+          <li>Capture initial customer context and likely bid shape</li>
+          <li>Identify early stakeholders and timing signals</li>
+        </ul>
       </div>
-      <div class="stage-detail-grid">
-        <div class="stage-detail-card">
-          <h4>Key actions</h4>
-          <ul>
-            <li>Confirm the opportunity is real and worth early attention</li>
-            <li>Capture initial customer context and likely bid shape</li>
-            <li>Identify early stakeholders and timing signals</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-  <h4>Templates & tools</h4>
+      
+      <div class="stage-detail-card">
+        <h4>Gate criteria</h4>
+        <ul>
+          <li>Opportunity is logged</li>
+          <li>Basic customer context is known</li>
+          <li>There is enough signal to move into qualification</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-  <div class="tool-links">
 
-    <a href="#" class="tool-link">
-      Open Opportunity in Salesforce
-    </a>
+<div id="stage2" class="stage-detail">
+  <div class="stage-detail-header">
+    <h3>2. Bid Qualification</h3>
+    <div class="salesforce-stage-tag">Sales stage: Lead Qualification</div>
+    <p>Determine whether the bid is worth pursuing.</p>
+  </div>
 
-    <a href="#" class="tool-link">
-      Run Initial Qualification
-    </a>
+  <div class="stage-detail-grid">
+    
+    <div class="stage-detail-card">
+      <h4>Key actions</h4>
+      <ul>
+        <li>Confirm strategic fit and customer alignment</li>
+        <li>Assess win probability and competitive position</li>
+        <li>Identify key risks, dependencies, and constraints</li>
+        <li>Engage key stakeholders early (Sales, Presales, Delivery)</li>
+      </ul>
+    </div>
 
-    <a href="#" class="tool-link">
-      Create Stakeholder Map
-    </a>
+    <div class="stage-detail-card">
+      <h4>Gate criteria</h4>
+      <ul>
+        <li>Clear problem and customer need is defined</li>
+        <li>Initial solution direction is understood</li>
+        <li>Key stakeholders are identified and engaged</li>
+        <li>Decision made to proceed (or stop)</li>
+      </ul>
+    </div>
 
   </div>
 </div>
-        <div class="stage-detail-card">
-          <h4>Gate criteria</h4>
-          <ul>
-            <li>Opportunity is logged</li>
-            <li>Basic customer context is known</li>
-            <li>There is enough signal to move into qualification</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div id="stage2" class="stage-detail">
-      <div class="stage-detail-header">
-        <h3>2. Bid Qualification</h3>
-        <p>Determine whether the bid should proceed.</p>
-      </div>
-      <div class="stage-detail-grid">
-        <div class="stage-detail-card">
-          <h4>Key actions</h4>
-          <ul>
-            <li>Run a structured bid / no-bid assessment</li>
-            <li>Check strategic fit, competitiveness and resourcing</li>
-            <li>Confirm whether Datacom should invest in the bid</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Templates &amp; tools</h4>
-          <ul>
-            <li>Bid qualification checklist</li>
-            <li>No-bid / proceed decision support</li>
-            <li>Salesforce qualification fields</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Gate criteria</h4>
-          <ul>
-            <li>Decision to proceed is clear</li>
-            <li>Strategic fit is confirmed</li>
-            <li>Owner and next step are agreed</li>
-          </ul>
-        </div>
-      </div>
-    </div>
 
     <div id="stage3" class="stage-detail">
-      <div class="stage-detail-header">
-        <h3>3. Bid Planning</h3>
-        <p>Set the bid up properly before development begins.</p>
-      </div>
-      <div class="stage-detail-grid">
-        <div class="stage-detail-card">
-          <h4>Key actions</h4>
-          <ul>
-            <li>Confirm scope, timeline and bid strategy</li>
-            <li>Assign contributors and agree responsibilities</li>
-            <li>Set review points and delivery plan</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Templates &amp; tools</h4>
-          <ul>
-            <li>Bid plan template</li>
-            <li>RACI / owner mapping</li>
-            <li>Timeline or milestone tracker</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Gate criteria</h4>
-          <ul>
-            <li>Bid plan is agreed</li>
-            <li>Owners are clear</li>
-            <li>Delivery approach is realistic</li>
-          </ul>
-        </div>
-      </div>
+  <div class="stage-detail-header">
+    <h3>3. Bid Planning</h3>
+    <div class="salesforce-stage-tag">Sales stage: Opportunity Validation</div>
+    <p>Structure the bid approach, ownership, and plan before development begins.</p>
+  </div>
+
+  <div class="stage-detail-grid">
+    <div class="stage-detail-card">
+      <h4>Key actions</h4>
+      <ul>
+        <li>Confirm bid scope, submission requirements, and timeline</li>
+        <li>Assign owners across Sales, Bid, Presales, Product, and Delivery</li>
+        <li>Identify pricing, delivery, and approval dependencies early</li>
+        <li>Define the response structure, win themes, and plan of attack</li>
+      </ul>
     </div>
 
-    <div id="stage4" class="stage-detail">
-      <div class="stage-detail-header">
-        <h3>4. Proposal Development</h3>
-        <p>Develop the response and bring the proposal together.</p>
-      </div>
-      <div class="stage-detail-grid">
-        <div class="stage-detail-card">
-          <h4>Key actions</h4>
-          <ul>
-            <li>Draft and refine response content</li>
-            <li>Coordinate SMEs, reviews and inputs</li>
-            <li>Strengthen clarity, quality and customer relevance</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Templates &amp; tools</h4>
-          <ul>
-            <li>Response templates</li>
-            <li>Bid library assets</li>
-            <li>Review checklist</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Gate criteria</h4>
-          <ul>
-            <li>Response is complete</li>
-            <li>Core quality checks are done</li>
-            <li>Proposal is ready for commercial review</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div id="stage5" class="stage-detail">
-      <div class="stage-detail-header">
-        <h3>5. Commercial Approval</h3>
-        <p>Validate pricing, terms and commercial position.</p>
-      </div>
-      <div class="stage-detail-grid">
-        <div class="stage-detail-card">
-          <h4>Key actions</h4>
-          <ul>
-            <li>Review pricing, margin and commercials</li>
-            <li>Check assumptions and approval thresholds</li>
-            <li>Resolve any issues before submission</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Templates &amp; tools</h4>
-          <ul>
-            <li>Pricing workbook</li>
-            <li>Approval matrix</li>
-            <li>Commercial review checklist</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Gate criteria</h4>
-          <ul>
-            <li>Pricing is approved</li>
-            <li>Commercial risks are understood</li>
-            <li>Submission can proceed</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div id="stage6" class="stage-detail">
-      <div class="stage-detail-header">
-        <h3>6. Submission</h3>
-        <p>Complete final checks and submit the proposal.</p>
-      </div>
-      <div class="stage-detail-grid">
-        <div class="stage-detail-card">
-          <h4>Key actions</h4>
-          <ul>
-            <li>Run final review and sign-off</li>
-            <li>Check submission requirements and deadlines</li>
-            <li>Submit and confirm receipt where needed</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Templates &amp; tools</h4>
-          <ul>
-            <li>Submission checklist</li>
-            <li>Final review checklist</li>
-            <li>Portal / submission guidance</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Gate criteria</h4>
-          <ul>
-            <li>All approvals are complete</li>
-            <li>Submission is compliant</li>
-            <li>Final package is issued on time</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div id="stage7" class="stage-detail">
-      <div class="stage-detail-header">
-        <h3>7. Outcome &amp; Learning</h3>
-        <p>Capture learning and improve the next bid.</p>
-      </div>
-      <div class="stage-detail-grid">
-        <div class="stage-detail-card">
-          <h4>Key actions</h4>
-          <ul>
-            <li>Run debrief and capture feedback</li>
-            <li>Document lessons learned</li>
-            <li>Feed insights back into assets and process</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Templates &amp; tools</h4>
-          <ul>
-            <li>Win / loss review template</li>
-            <li>Lessons learned log</li>
-            <li>Improvement tracker</li>
-          </ul>
-        </div>
-        <div class="stage-detail-card">
-          <h4>Gate criteria</h4>
-          <ul>
-            <li>Outcome is recorded</li>
-            <li>Insights are captured</li>
-            <li>Useful improvements are fed back into the system</li>
-          </ul>
-        </div>
-      </div>
+    <div class="stage-detail-card">
+      <h4>Gate criteria</h4>
+      <ul>
+        <li>Bid plan is agreed and owners are clear</li>
+        <li>Timeline is realistic and key milestones are set</li>
+        <li>Critical dependencies and risks are visible</li>
+        <li>The bid is ready to move into development</li>
+      </ul>
     </div>
   </div>
 </div>
 
+    <div id="stage4" class="stage-detail">
+  <div class="stage-detail-header">
+    <h3>4. Proposal Development</h3>
+    <div class="salesforce-stage-tag">Sales stage: Solution Proposal</div>
+    <p>Create a complete, compelling, and compliant proposal.</p>
+  </div>
+
+  <div class="stage-detail-grid">
+    
+    <div class="stage-detail-card">
+      <h4>Key actions</h4>
+      <ul>
+        <li>Develop the proposal response aligned to win themes</li>
+        <li>Collaborate across Sales, Presales, Product, and Delivery</li>
+        <li>Build pricing, commercials, and delivery approach</li>
+        <li>Review content for quality, consistency, and compliance</li>
+      </ul>
+    </div>
+
+    <div class="stage-detail-card">
+      <h4>Gate criteria</h4>
+      <ul>
+        <li>All response sections are complete and aligned</li>
+        <li>Pricing and delivery approach are validated</li>
+        <li>Internal reviews are completed (Red Team / DFA where required)</li>
+        <li>Proposal is ready for commercial approval</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+   <div id="stage5" class="stage-detail">
+  <div class="stage-detail-header">
+    <h3>5. Commercial Approval</h3>
+    <div class="salesforce-stage-tag">Sales stage: Solution Proposal</div>
+    <p>Confirm the commercial position before final submission.</p>
+  </div>
+
+  <div class="stage-detail-grid">
+    <div class="stage-detail-card">
+      <h4>Key actions</h4>
+      <ul>
+        <li>Validate pricing, margin, and commercial assumptions</li>
+        <li>Confirm delivery effort, timeline, and implementation inputs</li>
+        <li>Resolve outstanding risks, approvals, and exceptions</li>
+        <li>Prepare the bid for final internal sign-off</li>
+      </ul>
+    </div>
+
+    <div class="stage-detail-card">
+      <h4>Gate criteria</h4>
+      <ul>
+        <li>Pricing and commercials are approved</li>
+        <li>Delivery inputs are confirmed and understood</li>
+        <li>Required approvers have reviewed the bid</li>
+        <li>The proposal is cleared to move to submission</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <div id="stage6" class="stage-detail">
+  <div class="stage-detail-header">
+    <h3>6. Submission</h3>
+    <div class="salesforce-stage-tag">Sales stage: Solution Proposal</div>
+    <p>Submit a complete, approved, and compliant proposal.</p>
+  </div>
+
+  <div class="stage-detail-grid">
+    <div class="stage-detail-card">
+      <h4>Key actions</h4>
+      <ul>
+        <li>Complete final checks for accuracy, formatting, and compliance</li>
+        <li>Ensure all approvals are documented and in place</li>
+        <li>Submit the proposal in line with customer requirements</li>
+        <li>Confirm submission and communicate next steps internally</li>
+      </ul>
+    </div>
+
+    <div class="stage-detail-card">
+      <h4>Gate criteria</h4>
+      <ul>
+        <li>Proposal is submitted on time and in the correct format</li>
+        <li>All required approvals are captured and recorded</li>
+        <li>No outstanding risks or gaps remain</li>
+        <li>Handover to evaluation or negotiation phase is clear</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="stage7" class="stage-detail">
+  <div class="stage-detail-header">
+    <h3>7. Outcome & Learning</h3>
+    <div class="salesforce-stage-tag">Sales stage: Contracting &amp; Close</div>
+    <p>Capture outcomes, insights, and lessons to improve future bids.</p>
+  </div>
+
+  <div class="stage-detail-grid">
+    <div class="stage-detail-card">
+      <h4>Key actions</h4>
+      <ul>
+        <li>Capture bid outcome (win, loss, or no decision)</li>
+        <li>Conduct win/loss review with key stakeholders</li>
+        <li>Identify what worked well and what could improve</li>
+        <li>Share insights and update assets, templates, or approach</li>
+      </ul>
+    </div>
+
+    <div class="stage-detail-card">
+      <h4>Gate criteria</h4>
+      <ul>
+        <li>Outcome is recorded and communicated</li>
+        <li>Key learnings are captured and shared</li>
+        <li>Improvements are identified for future bids</li>
+        <li>Relevant updates are fed back into tools and process</li>
+      </ul>
+    </div>
+  </div>
+</div>
   <!-- ===== MIRO BOARD SECTION ===== -->
   <div class="miro-section">
 
@@ -1794,49 +1778,11 @@ For full stage detail, gates, ownership and outputs, use the MIRO board.
       </a>
     </div>
   </div>
-
-  
-
 </div>
-
-  <!-- ===== DESIGN PRINCIPLES (UNCHANGED STYLE) ===== -->
-  <div class="expandable mt-4">
-    <div class="expandable-header" onclick="toggleExpandable(this)">
-      <h3 class="expandable-title">Key Design Principles</h3>
-      <span class="expandable-icon">▼</span>
-    </div>
-
-    <div class="expandable-content">
-      <div class="expandable-body">
-        <div class="card-grid">
-
-          <div class="card">
-            <h4 class="card-title">Lifecycle Alignment</h4>
-            <p class="card-description">
-              Every bid stage maps directly to Salesforce opportunity stages for consistency.
-            </p>
-          </div>
-
-          <div class="card">
-            <h4 class="card-title">Clear Ownership</h4>
-            <p class="card-description">
-              Each stage has defined owners and clear handoff points.
-            </p>
-          </div>
-
-          <div class="card">
-            <h4 class="card-title">Right-Sized Gates</h4>
-            <p class="card-description">
-              Approvals are positioned to support quality without creating delays.
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
+</div>
+</div>
+ 
       
 
       
@@ -1852,102 +1798,64 @@ For full stage detail, gates, ownership and outputs, use the MIRO board.
 
 <h3 style="margin-top: 2rem; margin-bottom: 1rem;">What will change in behaviour</h3>
 
-<div class="card-grid">
-  <div class="card">
-    <h4>More structured progression</h4>
-    <p>
-  Deals move through defined stages with clear qualification and handoffs.
-  <br><strong>→ Drives:</strong> Faster proposal preparation and reduced approval cycle time
-</p>
+<div class="toolkit-grid">
+  <div class="toolkit-card">
+    <h4 class="toolkit-title">More structured progression</h4>
+    <p class="toolkit-description">
+      Deals move through defined stages with clear qualification and handoffs.
+      <br><strong>→ Drives:</strong> Faster proposal preparation and reduced approval cycle time
+    </p>
   </div>
 
-  <div class="card">
-    <h4>Higher asset usage</h4>
-    <p>
-  Sellers use approved templates and guidance instead of recreating content.
-  <br><strong>→ Drives:</strong> Higher asset reuse rate and improved win rate
-</p><p>
-  Sellers use approved templates and guidance instead of recreating content.
-  <br><strong>→ Drives:</strong> Higher asset reuse rate and improved win rate
-</p>
+  <div class="toolkit-card">
+    <h4 class="toolkit-title">Higher asset usage</h4>
+    <p class="toolkit-description">
+      Sellers use approved templates and guidance instead of recreating content.
+      <br><strong>→ Drives:</strong> Higher asset reuse rate and improved win rate
+    </p>
   </div>
 
-  <div class="card">
-    <h4>Earlier issue identification</h4>
-    <p>
-  Risks and pricing issues surface earlier in the lifecycle.
-  <br><strong>→ Drives:</strong> Faster bid turnaround time and fewer late-stage delays
-</p>
+  <div class="toolkit-card">
+    <h4 class="toolkit-title">Earlier issue identification</h4>
+    <p class="toolkit-description">
+      Risks and pricing issues surface earlier in the lifecycle.
+      <br><strong>→ Drives:</strong> Faster bid turnaround time and fewer late-stage delays
+    </p>
   </div>
 
-  <div class="card">
-    <h4>Less rework</h4>
-    <p>
-  Late-stage changes reduce due to clearer expectations upfront.
-  <br><strong>→ Drives:</strong> Shorter cycle times and higher on-time submission rates
-</p>
+  <div class="toolkit-card">
+    <h4 class="toolkit-title">Less rework</h4>
+    <p class="toolkit-description">
+      Late-stage changes reduce due to clearer expectations upfront.
+      <br><strong>→ Drives:</strong> Shorter cycle times and higher on-time submission rates
+    </p>
   </div>
-</div>
-<h3 style="margin-top: 2rem; margin-bottom: 1rem;">Target outcomes</h3>
+</div><h3 style="margin-top: 2rem; margin-bottom: 1rem;">Target outcomes</h3>
         <div class="metrics-grid">
-          <div class="metric-card">
-            <div class="metric-icon">⏱️</div>
-            <div class="metric-label">Proposal Preparation Time</div>
-            <div class="metric-value">-30%</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-icon">🚀</div>
-            <div class="metric-label">Bid Turnaround Time</div>
-            <div class="metric-value">-25%</div>
-          </div>
+
           <div class="metric-card">
             <div class="metric-icon">🎯</div>
             <div class="metric-label">Win Rate</div>
             <div class="metric-value">+15%</div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon">♻️</div>
-            <div class="metric-label">Asset Reuse Rate</div>
-            <div class="metric-value">85%</div>
+            <div class="metric-icon">🚀</div>
+            <div class="metric-label"># of Total Bids Shortlisted</div>
+            <div class="metric-value">+5%</div>
           </div>
           <div class="metric-card">
             <div class="metric-icon">✅</div>
-            <div class="metric-label">Approval Cycle Time</div>
-            <div class="metric-value">-40%</div>
+            <div class="metric-label">Final Review Kick-off occurs between 6-3 days prior to submission</div>
+            <div class="metric-value">100%</div>
           </div>
           <div class="metric-card">
             <div class="metric-icon">📅</div>
-            <div class="metric-label">On-Time Submissions</div>
-            <div class="metric-value">98%</div>
+            <div class="metric-label">Bid Reviews Completed 2 Days Prior to Submission</div>
+            <div class="metric-value">100%</div>
           </div>
         </div>
 
-        <h2 style="font-size: 1.75rem; font-weight: 700; margin: 3rem 0 1.5rem; color: #1e293b;">
-          Measurement Framework
-        </h2>
-
-        <div class="card-grid">
-          <div class="card">
-            <div class="card-icon"><span>⚡</span></div>
-            <h3 class="card-title">Efficiency Metrics</h3>
-            <p class="card-description">Time-based measures tracking how quickly bids move through the lifecycle.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon"><span>🎯</span></div>
-            <h3 class="card-title">Quality Metrics</h3>
-            <p class="card-description">Outcome-based measures for proposal quality, win rates and customer feedback.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon"><span>📊</span></div>
-            <h3 class="card-title">Adoption Metrics</h3>
-            <p class="card-description">Usage metrics tracking toolkit adoption, asset reuse and process compliance.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon"><span>🔄</span></div>
-            <h3 class="card-title">Continuous Improvement</h3>
-            <p class="card-description">Regular review cycles capturing lessons learned and further optimisation opportunities.</p>
-          </div>
-        </div>
+        
       </div>
 
      
@@ -1957,55 +1865,65 @@ For full stage detail, gates, ownership and outputs, use the MIRO board.
   <div class="page-header">
     <h1 class="page-title">Quick Wins in Motion</h1>
     <p class="page-description">
-      These improvements have been defined and prioritised to improve how bids are run.
-      They will be introduced in phases, with early changes focused on clarity, guidance and workflow consistency.
+      18 defined improvements across four categories — each low effort with high governance impact.
+      They'll be introduced in phases, starting with clarity, guidance and workflow consistency.
     </p>
   </div>
 
-  <div class="quickwins-split">
-    <div class="quickwins-column">
-      <h3 class="quickwins-heading">What changes</h3>
+  <div class="toolkit-grid">
 
-      <div class="toolkit-card">
-        <div class="toolkit-icon">🔗</div>
-        <h3 class="toolkit-title">Better workflow entry points</h3>
-        <p class="toolkit-description">
-          Clearer entry into live bids through a Bid Tracker link, better stage triggers and simpler navigation into the bid workspace.
-        </p>
-      </div>
-
-      <div class="toolkit-card">
-        <div class="toolkit-icon">📄</div>
-        <h3 class="toolkit-title">Cleaner bid guidance</h3>
-        <p class="toolkit-description">
-          Clearer proposal templates, bid solution document guidance, on-the-truck definitions and gate references to reduce ambiguity.
-        </p>
-      </div>
+    <!-- AutoRFP -->
+    <div class="toolkit-card" style="border-top: 4px solid #7827ff; border-color: #7827ff;">
+      <div class="toolkit-icon" style="background: linear-gradient(135deg, #7827ff, #5a1fcc);">🤖</div>
+      <h3 class="toolkit-title">AutoRFP</h3>
+      <p class="toolkit-description" style="margin-bottom: 0.75rem;">Smarter extraction, scoring and content generation.</p>
+      <ul style="padding-left: 1.2rem; margin: 0; color: #475569; font-size: 0.9rem; line-height: 1.8;">
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQB3qWSwf4AtTom2Sm2zqfUUAcpd-OXgFeZdd-H1y_pz9cY?e=J2xH1y" target="_blank" style="color: #7827ff; text-decoration: none; border-bottom: 1px solid #7827ff;">Apply CVP structure to bid content (Exec Summary + key responses)</a></li>
+       <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQDrNk84p1W8SrCqZob84vLyAaptzmq2EjWgAmykUR2tXzo?e=VT5rGs" target="_blank" style="color: #7827ff; text-decoration: none; border-bottom: 1px solid #7827ff;">Battlecard-to-Exec Summary win theme builder</a></li>
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQBbnjgEwGt5ToHJzDY7c0o4AQ52EblULCWqk7sQPdyTU_M?e=PuKY0K" target="_blank" style="color: #7827ff; text-decoration: none; border-bottom: 1px solid #7827ff;">Enhance Bid Solution Document (win themes + pricing guidance)</a></li>
+      </ul>
     </div>
 
-    <div class="quickwins-column">
-      <h3 class="quickwins-heading">What’s next</h3>
-
-      <div class="toolkit-card">
-        <div class="toolkit-icon">⚙️</div>
-        <h3 class="toolkit-title">Smarter system nudges</h3>
-        <p class="toolkit-description">
-          Small Salesforce improvements to support visibility, notifications and cleaner progression through the process.
-        </p>
-      </div>
-
-      <div class="toolkit-card">
-        <div class="toolkit-icon">📚</div>
-        <h3 class="toolkit-title">More usable assets</h3>
-        <p class="toolkit-description">
-          Better templates and supporting assets that give teams more practical guidance, with less reliance on side workarounds.
-        </p>
-      </div>
+    <!-- Templates & Enablement -->
+    <div class="toolkit-card" style="border-top: 4px solid #06b6d4; border-color: #06b6d4;">
+      <div class="toolkit-icon">📄</div>
+      <h3 class="toolkit-title">Templates &amp; Enablement</h3>
+      <p class="toolkit-description" style="margin-bottom: 0.75rem;">Cleaner docs, better guidance, less ambiguity.</p>
+      <ul style="padding-left: 1.2rem; margin: 0; color: #475569; font-size: 0.9rem; line-height: 1.8;">
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQBRgx-OVSNOSY8AFSh3AmihAeajqA0xGCg90fh20TshToM?e=qhYBhe" target="_blank" style="color: #06b6d4; text-decoration: none; border-bottom: 1px solid #06b6d4;">Publish "On-the-Truck" definition (traffic-light by module)</a></li>
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQBtA-g2QabGTLM1rsTacltRAdtox6NUm3LZvNK5tCNHdzM?e=DbA4up" target="_blank" style="color: #06b6d4; text-decoration: none; border-bottom: 1px solid #06b6d4;">Gate Criteria Quick Reference Card for sellers</a></li>
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQCDIwJoQmjQT7hTZkSyqSkpASaova4RXUrSmtlrMORVd5s?e=JcQP5w" target="_blank" style="color: #06b6d4; text-decoration: none; border-bottom: 1px solid #06b6d4;">Auto-calculate gate dates in bid schedule template</a></li>
+      </ul>
     </div>
+
+    <!-- Salesforce -->
+    <div class="toolkit-card" style="border-top: 4px solid #3b82f6; border-color: #3b82f6;">
+      <div class="toolkit-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">☁️</div>
+      <h3 class="toolkit-title">Salesforce</h3>
+      <p class="toolkit-description" style="margin-bottom: 0.75rem;">Small config changes for better visibility and handoffs.</p>
+      <ul style="padding-left: 1.2rem; margin: 0; color: #475569; font-size: 0.9rem; line-height: 1.8;">
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQCVsi9e0klZT79meAsZs_2nAYCk-C-kLlmeSpdflJ2JbK8?e=wq22zp" target="_blank" style="color: #3b82f6; text-decoration: none; border-bottom: 1px solid #3b82f6;">Add Bid Tracker Link field to Opportunity</a></li>
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQBKGC5g8l-2TbcDsyiyc-s_ARRdj-V_gy8-XYLl1LrzhVc?e=8W5akw" target="_blank" style="color: #3b82f6; text-decoration: none; border-bottom: 1px solid #3b82f6;">Automate "Inform Bid Manager" notification on qualification</a></li>
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQBmTdnynf87QpcPValq_j1uAY6frgDO5_q3Vv7JXHiUn58?e=RGfHYu" target="_blank" style="color: #3b82f6; text-decoration: none; border-bottom: 1px solid #3b82f6;">Strategically Significant Bid flag + auto-alert to approvers</a></li>
+      </ul>
+    </div>
+
+    <!-- Process & Governance -->
+    <div class="toolkit-card" style="border-top: 4px solid #10b981; border-color: #10b981;">
+      <div class="toolkit-icon" style="background: linear-gradient(135deg, #10b981, #059669);">⚙️</div>
+      <h3 class="toolkit-title">Process &amp; Governance</h3>
+      <p class="toolkit-description" style="margin-bottom: 0.75rem;">Structured decision-making and auditable checkpoints.</p>
+      <ul style="padding-left: 1.2rem; margin: 0; color: #475569; font-size: 0.9rem; line-height: 1.8;">
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQD-NNQ-NAjCQJCNcf-UanmMAQrbie-s6Y0mZgw5vjf6Big?e=hjOdfw" target="_blank" style="color: #10b981; text-decoration: none; border-bottom: 1px solid #10b981;">Formalise Go/No-Go qualification decision criteria</a></li>
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQC6XIf60kpyRL0AIYOGXEEMAUKBRyFx8nqHetPU8IA0uhs?e=X58GQ1" target="_blank" style="color: #10b981; text-decoration: none; border-bottom: 1px solid #10b981;">Define standard DFA finance approval guardrails</a></li>
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQDqRDWokIbuTLKz3tfXVBG7Aekl7RARnsQsxSY052RACGg?e=Qgc5Dd" target="_blank" style="color: #10b981; text-decoration: none; border-bottom: 1px solid #10b981;">Introduce Green / Red review roles for bid quality</a></li>
+        <li><a href="https://datacomunity.sharepoint.com/:w:/s/SaaSProductsGTMC/IQAbD_mSEEOFQZNQj6K0unY7ATzTpewA9m4zGoL6sXr8Hus?e=mzeOdZ" target="_blank" style="color: #10b981; text-decoration: none; border-bottom: 1px solid #10b981;">Gate readiness check via Power Automate + SharePoint</a></li>
+      </ul>
+    </div>
+
   </div>
 
-  <h3 style="margin-top: 2rem; margin-bottom: 1rem;">What this means in practice</h3>
-
+  <!-- What this means -->
   <div class="expandable mt-4 open">
     <div class="expandable-header" onclick="toggleExpandable(this)">
       <h3 class="expandable-title">What this means for sellers and pre-sales</h3>
@@ -2032,14 +1950,7 @@ For full stage detail, gates, ownership and outputs, use the MIRO board.
   </div>
 
   <div class="callout-banner">
-    👉 This will evolve, but the bid flow and structure will remain consistent.
-  </div>
-
-  <div class="page-description mt-4">
-    <p>
-      The intent of these quick wins is simple: make it easier to run bids well, with better guidance,
-      cleaner handoffs and more confidence at each stage.
-    </p>
+    👉 13 quick wins defined. These will be introduced in phases — this will evolve, but the bid flow and structure will remain consistent.
   </div>
 </div>
 </main>
